@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+ <meta charset="UTF-8">
+ <title>Laboratório de CORS - Entrega 1</title>
+ <style>
+    body
+    {
+        font-family: sans-serif; 
+        margin: 2rem; 
+        line-height: 1.5; 
+    }
+    
+    button 
+    { 
+        padding: 10px 16px; 
+        font-size: 1rem; 
+        cursor: pointer; 
+    }
+    
+    pre 
+    { 
+        background: #f4f4f4; 
+        padding: 1rem; 
+        border-radius: 4px;
+        border: 1px solid #ccc; 
+    }
+ </style>
+</head>
+<body>
+    <h1>
+        Laboratório: Requisições Cross-Origin
+    </h1>
+    <button id="btnConsultar">
+        Executar Requisição
+    </button>
+    
+    <h3>
+        Resposta:
+    </h3>
+    
+    <pre id="output">
+        Nenhuma requisição disparada ainda.
+    </pre>
+    
+    <script>
+        const btn = document.getElementById('btnConsultar');
+
+        const output = document.getElementById('output');
+
+        btn.addEventListener('click', () => {
+            output.textContent = 'Enviando...';
+            fetch('http://localhost:8080/dados', 
+            {
+                method: "GET",
+                headers: 
+                {
+                    "X-identificador-Estudante" : 2026108210
+                }
+            }
+            )
+            .then(res => {
+            if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+            return res.json();
+            })
+            .then(data => {
+                output.textContent = JSON.stringify(data, null, 2);
+                })
+            .catch(err => {
+                output.textContent = `Falha na requisição: ${err.message}`;
+                console.error('Detalhes do erro:', err);
+            });
+        });
+    </script>
+</body>
+</html>
